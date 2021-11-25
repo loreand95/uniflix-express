@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const authService = require('../service/authService')
 
 const mandatoryAuth = async (req, res, next) => {
   try {
@@ -6,15 +6,16 @@ const mandatoryAuth = async (req, res, next) => {
       throw new Error();
     }
 
-    const token = req.header("Authorization").replace("Bearer ", "");
+    const token = req.header("Authorization")
 
-    const { _id } = jwt.verify(token, process.env.TOKEN_SECRET);
+    const userId = await authService.getUserIdByToken(token)
 
-    if (!_id) {
+    console.log(userId)
+    if (!userId) {
       throw new Error();
     }
 
-    req.userId = _id;
+    req.userId = userId;
     next();
   } catch (e) {
     res.status(401).send({ error: "Invalid Token" });
@@ -26,13 +27,13 @@ const optionalAuth = async (req, res, next) => {
     if (req.header("Authorization")) {
       const token = req.header("Authorization").replace("Bearer ", "");
 
-      const { _id } = jwt.verify(token, process.env.TOKEN_SECRET);
+      const userId = await authService.getUserIdByToken(token)
 
-      if (!_id) {
+      if (!userId) {
         throw new Error();
       }
 
-      req.userId = _id;
+      req.userId = userId;
     }
 
     next();

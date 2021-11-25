@@ -5,7 +5,7 @@ const actorRouter = require('./routes/actorRouter')
 const dbo = require('./conf/db');
 
 const app = express();
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3002
 
 app.use(express.json())
 
