@@ -1,17 +1,42 @@
 version: '3'
 services:
-  # webapp:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ".:/usr/src/app"
-  #   environment: 
-  #     - MONGODB_CONNSTRING=mongodb://AzureDiamond:hunter2@mongodb
-  #     - TOKEN_SECRET=thisismynewcourse
-  #     - NODE_ENV=production
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    ports:
+      - 80:3000
+  movieservice:
+    build:
+      context: ./services/uniflix-movieservice
+      dockerfile: Dockerfile
+    ports:
+      - 3002:3002
+    environment: 
+      - MONGODB_CONNSTRING=mongodb://AzureDiamond:hunter2@mongodb
+      - NODE_ENV=production
+  shopservice:
+    build:
+      context: ./services/uniflix-shopservice
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    environment: 
+      - MONGODB_CONNSTRING=mongodb://AzureDiamond:hunter2@mongodb
+      - USER_SERVICE_URI=http://userservice:3003/rest
+      - MOVIE_SERVICE_URI=http://movieservice:3002/rest/movies
+      - NODE_ENV=production
+  userservice:
+    build:
+      context: ./services/uniflix-userservice
+      dockerfile: Dockerfile
+    ports:
+      - 3003:3003
+    environment: 
+      - MONGODB_CONNSTRING=mongodb://AzureDiamond:hunter2@mongodb
+      - TOKEN_SECRET=thisismynewcourse
+      - PORT=3003
+      - NODE_ENV=production
   mongodb:
     image: mongo:5.0
     expose:
