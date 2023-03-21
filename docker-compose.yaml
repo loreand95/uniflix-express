@@ -6,11 +6,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - 80:3000
-    environment: 
-      - REACT_APP_URI_FILM_SERVICE=http://movieservice:3002
-      - REACT_APP_URI_SHOP_SERVICE=http://shopservice:3001
-      - REACT_APP_URI_USER_SERVICE=http://userservice:3003
-      - NODE_ENV=production
   movieservice:
     build:
       context: ./services/uniflix-movieservice

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const serviceConfig = {
-  url: process.env.REACT_APP_URI_FILM_SERVICE,
-  timeout: 12000,
+  url: 'http://localhost:3002/rest',
+  timeout: 6000,
   configHeaders: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'

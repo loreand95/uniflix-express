@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const shopServiceConfig = {
-  url: process.env.REACT_APP_URI_SHOP_SERVICE,
+  url: 'http://localhost:3001/rest',
   timeout: 6000,
   configHeaders: {
     'Accept': 'application/json',
