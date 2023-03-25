@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const serviceConfig = {
-  url: process.env.MOVIE_SERVICE_URI,
+  url: process.env.REACT_APP_MOVIE_SERVICE_URI,
   timeout: 6000,
   configHeaders: {
     'Accept': 'application/json',
