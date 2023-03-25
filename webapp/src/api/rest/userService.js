@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const userServiceConfig = {
-  url: process.env.USER_SERVICE_URI,
+  url: process.env.REACT_APP_USER_SERVICE_URI,
   timeout: 6000,
   configHeaders: {
     'Accept': 'application/json',
