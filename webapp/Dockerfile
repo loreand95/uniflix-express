@@ -1,6 +1,6 @@
 # ==== CONFIGURE =====
 # Use a Node 16 base image
-FROM node:15-alpine 
+FROM node:15-alpine AS builder
 # Set the working directory to /app inside the container
 WORKDIR /app
 # Copy app files
@@ -8,12 +8,23 @@ COPY . .
 # ==== BUILD =====
 # Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
 RUN npm ci 
+
+ARG REACT_APP_MOVIE_SERVICE_URI
+ARG REACT_APP_SHOP_SERVICE_URI
+ARG REACT_APP_USER_SERVICE_URI
+
 # Build the app
 RUN npm run build
 # ==== RUN =======
 # Set the env to "production"
 ENV NODE_ENV production
 # Expose the port on which the app will be running (3000 is the default that `serve` uses)
-EXPOSE 3000
-# Start the app
-CMD [ "npx", "serve", "build" ]
+
+FROM nginx:1.23.2-alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/build /usr/share/nginx/html
+RUN touch /var/run/nginx.pid
+RUN chown -R nginx:nginx /var/run/nginx.pid /usr/share/nginx/html /var/cache/nginx /var/log/nginx /etc/nginx/conf.d
+USER nginx
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

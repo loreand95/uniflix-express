@@ -1,0 +1,15 @@
+# Deployment with docker
+
+Add file named `.env` containing addresses of services as below:
+
+```
+SHOP_SERVICE_URI=http://api.example:3001/rest
+MOVIE_SERVICE_URI=http://api.example:3002/rest
+USER_SERVICE_URI=http://api.example:3003/rest
+```
+
+Run wit docker-compose
+
+```
+docker-compose up --build
+```

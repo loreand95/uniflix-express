@@ -2,14 +2,16 @@ version: '3'
 services:
   webapp:
     build:
+      args:
+        REACT_APP_MOVIE_SERVICE_URI: ${MOVIE_SERVICE_URI}
+        REACT_APP_SHOP_SERVICE_URI: ${SHOP_SERVICE_URI}
+        REACT_APP_USER_SERVICE_URI: ${USER_SERVICE_URI}
       context: ./webapp
       dockerfile: Dockerfile
     ports:
-      - 80:3000
-    environment: 
-      - REACT_APP_MOVIE_SERVICE_URI=http://movieservice:3002/rest
-      - REACT_APP_SHOP_SERVICE_URI=http://movieservice:3001/rest
-      - REACT_APP_USER_SERVICE_URI=http://movieservice:3003/rest
+      - 80:80
+    env_file:
+      - .env
   movieservice:
     build:
       context: ./services/uniflix-movieservice
