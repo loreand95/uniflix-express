@@ -20,11 +20,12 @@ RUN npm run build
 ENV NODE_ENV production
 # Expose the port on which the app will be running (3000 is the default that `serve` uses)
 
-FROM nginx:1.23.2-alpine
+FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY my-site.cer /etc/ssl/certs/my-site.cer
+COPY my-site.key /etc/ssl/private/my-site.key
+
 COPY --from=builder /app/build /usr/share/nginx/html
-RUN touch /var/run/nginx.pid
-RUN chown -R nginx:nginx /var/run/nginx.pid /usr/share/nginx/html /var/cache/nginx /var/log/nginx /etc/nginx/conf.d
-USER nginx
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
